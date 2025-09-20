@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Worlds</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #000;
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, Arial, sans-serif;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Loading screen */
+    #loading-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        font-size: 1.5em;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        background: #000;
+        transition: opacity 1s ease-in-out;
+    }
+
+    #loading-text {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    iframe {
+        border: none;
+        display: none;
+    }
+
+    /* Mobile full size (for phones/tablets) */
+    .mobile-full {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Fancy centered "mobile frame" for PC/Console users */
+    .mobile-frame {
+        width: 390px;   /* typical phone width */
+        height: 97vh;   /* top and bottom margin automatically */
+        border-radius: 10px; /* smooth rounded edges */
+        box-shadow: 
+            0 0 60px rgba(255, 255, 255, 0.2),   /* soft outer glow */
+            0 0 120px rgba(255, 255, 255, 0.1); /* subtle wide glow */
+        background: #fff;
+        display: block;
+        margin: auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Extra glow effect behind iframe */
+    .mobile-frame::before {
+        content: "";
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        width: 120%;
+        height: 120%;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%;
+        filter: blur(40px);
+        z-index: -1;
+    }
+</style>
+</head>
+<body>
+
+<!-- Fake Loading Screen -->
+<div id="loading-screen">
+    <div id="loading-text">Please Wait…</div>
+</div>
+
+<!-- Webapp frame -->
+<iframe id="app-frame"></iframe>
+
+<script>
+const messages = [
+    "Connecting To Magic Worlds…",
+    "Please wait…",
+    "Connecting to Puweb server…",
+    "You’re almost there…"
+];
+
+const loadingText = document.getElementById('loading-text');
+let msgIndex = 0;
+
+function showMessage(index) {
+    loadingText.style.opacity = 0;
+    setTimeout(() => {
+        loadingText.textContent = messages[index];
+        loadingText.style.opacity = 1;
+    }, 500);
+}
+
+showMessage(msgIndex);
+
+const messageInterval = setInterval(() => {
+    msgIndex++;
+    if (msgIndex < messages.length) {
+        showMessage(msgIndex);
+    }
+}, 1500);
+
+// Detect device type
+function isMobileDevice() {
+    return /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(navigator.userAgent);
+}
+
+// Set iframe source based on device
+const iframe = document.getElementById('app-frame');
+if (isMobileDevice()) {
+    iframe.src = "https://t.me/magicworldsbot/?startapp"; // Link 1 for phones/tablets
+    iframe.classList.add("mobile-full");
+} else {
+    iframe.src = "https://previewer.adalo.com/9a617ecf-1f98-45a1-a2c1-657fc4b4922e"; // Link 2 for PC/console
+    iframe.classList.add("mobile-frame"); // show centered smooth frame
+}
+
+// After ~4.5 seconds, fade out loading and show app
+setTimeout(() => {
+    document.getElementById('loading-screen').style.opacity = 0;
+    setTimeout(() => {
+        document.getElementById('loading-screen').style.display = 'none';
+        iframe.style.display = 'block';
+    }, 1000);
+    clearInterval(messageInterval);
+}, 4500);
+
+// Spoof standalone mode for Adalo
+Object.defineProperty(window.navigator, 'standalone', {
+    value: true,
+    configurable: true
+});
+
+// Remove Add-to-Home banner if injected later
+const hideBanner = () => {
+    const banner = document.querySelector('.add-to-home-screen-prompt, [data-testid="pwa-banner"]');
+    if (banner) banner.style.display = 'none';
+};
+setInterval(hideBanner, 1000);
+</script>
+
+</body>
+</html>
