@@ -1,260 +1,709 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magic Worlds</title>
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background: #000;
-        color: #fff;
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, Arial, sans-serif;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Worlds</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .pc-layout {
-        display: flex;
-        height: 100vh;
-        width: 100vw;
-        justify-content: center;
-        align-items: center;
-    }
+        /* Loading screen */
+        #loading-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            font-size: 1.5em;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            background: #000;
+            transition: opacity 1s ease-in-out;
+        }
 
-    #loading-screen {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        text-align: center;
-        font-size: 1.5em;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 9999;
-        background: #000;
-        transition: opacity 1s ease-in-out;
-    }
+        #loading-text {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
 
-    #loading-text {
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-    }
+        iframe {
+            border: none;
+            display: none;
+        }
 
-    iframe {
-        border: none;
-        display: none;
-    }
+        /* Container for desktop layout */
+        .desktop-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            gap: 40px;
+        }
 
-    .mobile-full {
-        width: 100%;
-        height: 100%;
-    }
+        /* Mobile full size (for phones/tablets) */
+        .mobile-full {
+            width: 100%;
+            height: 100%;
+        }
 
-    .mobile-frame {
-        width: 390px;
-        height: 97vh;
-        border-radius: 10px;
-        box-shadow: 
-            0 0 60px rgba(255, 255, 255, 0.2),
-            0 0 120px rgba(255, 255, 255, 0.1);
-        background: #fff;
-        display: block;
-        margin: auto;
-        position: relative;
-        z-index: 1;
-    }
+        /* Fancy centered "mobile frame" for PC/Console users */
+        .mobile-frame {
+            width: 390px;
+            height: 97vh;
+            border-radius: 10px;
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.2),
+                        0 0 120px rgba(255, 255, 255, 0.1);
+            background: #fff;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
 
-    .mobile-frame::before {
-        content: "";
-        position: absolute;
-        top: -10%;
-        left: -10%;
-        width: 120%;
-        height: 120%;
-        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
-        border-radius: 50%;
-        filter: blur(40px);
-        z-index: -1;
-    }
+        /* Extra glow effect behind iframe */
+        .mobile-frame::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -1;
+        }
 
-    /* VC Sidebar */
-    #vc-sidebar {
-        flex: 1;
-        height: 97vh;
-        margin-left: 20px;
-        border-radius: 12px;
-        background: rgba(128, 0, 255, 0.1);
-        display: flex;
-        flex-direction: column;
-        padding: 15px;
-        backdrop-filter: blur(8px);
-        box-shadow: inset 0 0 20px rgba(128,0,255,0.2);
-    }
+        /* Voice Chat Panel */
+        .vc-panel {
+            width: 320px;
+            height: 97vh;
+            background: rgba(88, 101, 242, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(88, 101, 242, 0.2);
+            display: none;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
 
-    #username-form {
-        display: flex;
-        margin-bottom: 15px;
-    }
+        .vc-panel.show {
+            display: flex;
+        }
 
-    #username-form input {
-        flex: 1;
-        padding: 8px;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        margin-right: 10px;
-    }
+        /* Username Setup */
+        .username-setup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
 
-    #username-form button {
-        padding: 8px 12px;
-        border: none;
-        border-radius: 8px;
-        background: #8000ff;
-        color: #fff;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
+        .username-setup h2 {
+            color: #5865f2;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
 
-    #username-form button:hover {
-        background: #a64dff;
-    }
+        .username-input {
+            width: 100%;
+            max-width: 200px;
+            padding: 12px;
+            border: 2px solid rgba(88, 101, 242, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
 
-    .vc-channel {
-        padding: 12px;
-        margin: 5px 0;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.05);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-    }
+        .username-input:focus {
+            border-color: #5865f2;
+        }
 
-    .vc-channel:hover {
-        background: rgba(128, 0, 255, 0.3);
-        box-shadow: 0 0 15px rgba(128,0,255,0.7);
-    }
+        .username-btn {
+            padding: 12px 24px;
+            background: #5865f2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
 
-    .vc-channel span {
-        font-size: 14px;
-    }
+        .username-btn:hover {
+            background: #4752c4;
+        }
 
-    #channels {
-        flex: 1;
-        overflow-y: auto;
-    }
-</style>
+        /* VC List */
+        .vc-list {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .vc-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .vc-header h2 {
+            color: #5865f2;
+            margin: 0 0 5px 0;
+            font-size: 1.3em;
+        }
+
+        .user-info {
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+
+        .channels-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .channels-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .channels-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .channels-container::-webkit-scrollbar-thumb {
+            background: rgba(88, 101, 242, 0.5);
+            border-radius: 3px;
+        }
+
+        .vc-channel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vc-channel:hover {
+            background: rgba(88, 101, 242, 0.2);
+            border-color: rgba(88, 101, 242, 0.5);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .vc-channel:hover::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(88, 101, 242, 0.1), rgba(138, 43, 226, 0.1));
+            border-radius: 10px;
+            z-index: -1;
+        }
+
+        .channel-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .channel-info {
+            color: #b3b3b3;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .user-count::before {
+            content: "👥";
+            font-size: 10px;
+        }
+
+        /* Active Channel */
+        .vc-channel.active {
+            background: rgba(88, 101, 242, 0.3);
+            border-color: #5865f2;
+        }
+
+        /* Leave Button */
+        .leave-btn {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(237, 66, 69, 0.2);
+            color: #ed4245;
+            border: 1px solid rgba(237, 66, 69, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .leave-btn:hover {
+            background: rgba(237, 66, 69, 0.3);
+        }
+
+        .leave-btn.show {
+            display: block;
+        }
+
+        /* Jitsi Integration */
+        #jitsi-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            z-index: 10000;
+        }
+
+        #jitsi-meet {
+            width: 100%;
+            height: 100%;
+        }
+
+        .close-jitsi {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ed4245;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10001;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
+    <!-- Fake Loading Screen -->
+    <div id="loading-screen">
+        <div id="loading-text">Please Wait…</div>
+    </div>
 
-<div id="loading-screen">
-    <div id="loading-text">Please Wait…</div>
-</div>
+    <!-- Main Content -->
+    <div class="desktop-container" id="main-container">
+        <!-- Webapp frame -->
+        <iframe id="app-frame"></iframe>
+        
+        <!-- Voice Chat Panel (only shows on desktop) -->
+        <div class="vc-panel" id="vc-panel">
+            <!-- Username Setup -->
+            <div class="username-setup" id="username-setup">
+                <h2>Join Voice Chat</h2>
+                <input type="text" class="username-input" id="username-input" placeholder="Enter your username" maxlength="20">
+                <button class="username-btn" id="username-btn">Continue</button>
+            </div>
 
-<div id="pc-layout" class="pc-layout" style="display:none;">
-    <iframe id="app-frame"></iframe>
-    <div id="vc-sidebar">
-        <form id="username-form">
-            <input type="text" id="username" placeholder="Enter username…" required />
-            <button type="submit">Join</button>
-        </form>
-        <div id="channels" style="display:none;">
-            <div class="vc-channel" onclick="joinVC('general')"><span>General</span></div>
-            <div class="vc-channel" onclick="joinVC('gaming')"><span>Gaming</span></div>
-            <div class="vc-channel" onclick="joinVC('music')"><span>Music</span></div>
+            <!-- VC List -->
+            <div class="vc-list" id="vc-list">
+                <div class="vc-header">
+                    <h2>Voice Channels</h2>
+                    <div class="user-info">Welcome, <span id="current-username"></span></div>
+                </div>
+
+                <div class="channels-container">
+                    <div class="vc-channel" data-room="general">
+                        <div class="channel-name">🎮 General</div>
+                        <div class="channel-info">
+                            <span>General chat</span>
+                            <span class="user-count">3</span>
+                        </div>
+                    </div>
+
+                    <div class="vc-channel" data-room="gaming">
+                        <div class="channel-name">🎯 Gaming</div>
+                        <div class="channel-info">
+                            <span>Gaming discussion</span>
+                            <span class="user-count">7</span>
+                        </div>
+                    </div>
+
+                    <div class="vc-channel" data-room="chill">
+                        <div class="channel-name">🎵 Chill Zone</div>
+                        <div class="channel-info">
+                            <span>Relax and chat</span>
+                            <span class="user-count">2</span>
+                        </div>
+                    </div>
+
+                    <div class="vc-channel" data-room="study">
+                        <div class="channel-name">📚 Study Hall</div>
+                        <div class="channel-info">
+                            <span>Focus together</span>
+                            <span class="user-count">5</span>
+                        </div>
+                    </div>
+
+                    <div class="vc-channel" data-room="music">
+                        <div class="channel-name">🎸 Music</div>
+                        <div class="channel-info">
+                            <span>Share your tunes</span>
+                            <span class="user-count">1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leave-btn" id="leave-btn">Leave Channel</div>
+            </div>
         </div>
     </div>
-</div>
 
-<iframe id="mobile-frame"></iframe>
+    <!-- Jitsi Meet Container -->
+    <div id="jitsi-container">
+        <button class="close-jitsi" id="close-jitsi">Leave Voice Chat</button>
+        <div id="jitsi-meet"></div>
+    </div>
 
-<script>
-const messages = [
-    "Connecting To Magic Worlds…",
-    "Please wait…",
-    "Connecting to Puweb server…",
-    "You’re almost there…"
-];
-const loadingText = document.getElementById('loading-text');
-let msgIndex = 0;
-function showMessage(index) {
-    loadingText.style.opacity = 0;
-    setTimeout(() => {
-        loadingText.textContent = messages[index];
-        loadingText.style.opacity = 1;
-    }, 500);
-}
-showMessage(msgIndex);
-const messageInterval = setInterval(() => {
-    msgIndex++;
-    if (msgIndex < messages.length) {
-        showMessage(msgIndex);
-    }
-}, 1500);
+    <script src="https://8x8.vc/external_api.js"></script>
+    <script>
+        const messages = [
+            "Connecting To Magic Worlds…",
+            "Please wait…",
+            "Connecting to Puweb server…",
+            "You're almost there…"
+        ];
 
-function isMobileDevice() {
-    return /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(navigator.userAgent);
-}
-const iframeMobile = document.getElementById('mobile-frame');
-const pcLayout = document.getElementById('pc-layout');
-const iframe = document.getElementById('app-frame');
+        const loadingText = document.getElementById('loading-text');
+        let msgIndex = 0;
 
-if (isMobileDevice()) {
-    iframeMobile.src = "https://t.me/magicworldsbot/?startapp";
-    iframeMobile.classList.add("mobile-full");
-} else {
-    pcLayout.style.display = "flex";
-    iframe.src = "https://previewer.adalo.com/9a617ecf-1f98-45a1-a2c1-657fc4b4922e";
-    iframe.classList.add("mobile-frame");
-}
-
-setTimeout(() => {
-    document.getElementById('loading-screen').style.opacity = 0;
-    setTimeout(() => {
-        document.getElementById('loading-screen').style.display = 'none';
-        if (isMobileDevice()) {
-            iframeMobile.style.display = 'block';
-        } else {
-            iframe.style.display = 'block';
+        function showMessage(index) {
+            loadingText.style.opacity = 0;
+            setTimeout(() => {
+                loadingText.textContent = messages[index];
+                loadingText.style.opacity = 1;
+            }, 500);
         }
-    }, 1000);
-    clearInterval(messageInterval);
-}, 4500);
 
-// Jitsi config
-const API_KEY_PATH = "vpaas-magic-cookie-b918ae7c571a48529574480b276e6bf6/07a1e3";
+        showMessage(msgIndex);
+        const messageInterval = setInterval(() => {
+            msgIndex++;
+            if (msgIndex < messages.length) {
+                showMessage(msgIndex);
+            }
+        }, 1500);
 
-document.getElementById('username-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const username = document.getElementById('username').value.trim();
-    if (username) {
-        document.getElementById('username-form').style.display = 'none';
-        document.getElementById('channels').style.display = 'block';
-    }
-});
+        // Detect device type
+        function isMobileDevice() {
+            return /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(navigator.userAgent);
+        }
 
-function joinVC(roomName) {
-    const username = document.getElementById('username').value.trim();
-    if (!username) return alert("Please enter a username first.");
+        // Voice chat variables
+        let jitsiApi = null;
+        let currentUsername = '';
+        let currentRoom = '';
 
-    const domain = "8x8.vc";
-    const options = {
-        roomName: API_KEY_PATH + "/" + roomName,
-        width: "100%",
-        height: 400,
-        parentNode: document.getElementById('vc-sidebar'),
-        userInfo: { displayName: username }
-    };
-    const api = new JitsiMeetExternalAPI(domain, options);
-}
-</script>
-<script src='https://8x8.vc/external_api.js'></script>
+        // Set iframe source based on device
+        const iframe = document.getElementById('app-frame');
+        const vcPanel = document.getElementById('vc-panel');
+        const mainContainer = document.getElementById('main-container');
 
+        if (isMobileDevice()) {
+            iframe.src = "https://t.me/magicworldsbot/?startapp";
+            iframe.classList.add("mobile-full");
+            mainContainer.style.justifyContent = 'center';
+        } else {
+            iframe.src = "https://previewer.adalo.com/9a617ecf-1f98-45a1-a2c1-657fc4b4922e";
+            iframe.classList.add("mobile-frame");
+            vcPanel.classList.add("show");
+        }
+
+        // Username setup
+        const usernameSetup = document.getElementById('username-setup');
+        const vcList = document.getElementById('vc-list');
+        const usernameInput = document.getElementById('username-input');
+        const usernameBtn = document.getElementById('username-btn');
+        const currentUsernameSpan = document.getElementById('current-username');
+
+        usernameBtn.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            if (username.length >= 2) {
+                currentUsername = username;
+                currentUsernameSpan.textContent = username;
+                usernameSetup.style.display = 'none';
+                vcList.style.display = 'flex';
+            } else {
+                alert('Username must be at least 2 characters long');
+            }
+        });
+
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                usernameBtn.click();
+            }
+        });
+
+        // Voice channel functionality
+        const channels = document.querySelectorAll('.vc-channel');
+        const leaveBtn = document.getElementById('leave-btn');
+        const jitsiContainer = document.getElementById('jitsi-container');
+        const closeJitsiBtn = document.getElementById('close-jitsi');
+
+        channels.forEach(channel => {
+            channel.addEventListener('click', () => {
+                if (!currentUsername) return;
+                
+                const room = channel.dataset.room;
+                joinVoiceChannel(room, channel);
+            });
+        });
+
+        function joinVoiceChannel(room, channelElement) {
+            // Check if JitsiMeetExternalAPI is available
+            if (typeof JitsiMeetExternalAPI === 'undefined') {
+                console.error('Jitsi Meet API not loaded. Trying fallback...');
+                // Fallback to standard meet.jit.si if 8x8.vc API fails
+                loadFallbackJitsi(room, channelElement);
+                return;
+            }
+
+            // Remove active class from all channels
+            channels.forEach(ch => ch.classList.remove('active'));
+            
+            // Add active class to current channel
+            channelElement.classList.add('active');
+            
+            // Show leave button
+            leaveBtn.classList.add('show');
+            
+            currentRoom = room;
+            
+            try {
+                // Initialize Jitsi Meet with your updated API credentials
+                const domain = '8x8.vc';
+                const options = {
+                    roomName: `vpaas-magic-cookie-b918ae7c571a48529574480b276e6bf6/MagicWorlds_${room}`,
+                    width: '100%',
+                    height: '100%',
+                    parentNode: document.getElementById('jitsi-meet'),
+                    userInfo: {
+                        displayName: currentUsername
+                    },
+                    configOverwrite: {
+                        startWithAudioMuted: false,
+                        startWithVideoMuted: true,
+                        enableWelcomePage: false,
+                        prejoinPageEnabled: false,
+                        disableDeepLinking: true,
+                        // Additional config for vpaas
+                        deploymentInfo: {
+                            shard: 'vpaas-magic-cookie-b918ae7c571a48529574480b276e6bf6'
+                        }
+                    },
+                    interfaceConfigOverwrite: {
+                        TOOLBAR_BUTTONS: [
+                            'microphone', 'camera', 'closedcaptions', 'desktop',
+                            'fullscreen', 'fodeviceselection', 'hangup',
+                            'profile', 'chat', 'settings', 'videoquality',
+                            'filmstrip', 'feedback', 'stats', 'shortcuts'
+                        ],
+                        SHOW_JITSI_WATERMARK: false,
+                        SHOW_WATERMARK_FOR_GUESTS: false,
+                        SHOW_BRAND_WATERMARK: false
+                    }
+                };
+
+                jitsiApi = new JitsiMeetExternalAPI(domain, options);
+                
+                // Add event listeners for better error handling
+                jitsiApi.addEventListener('videoConferenceJoined', () => {
+                    console.log('Successfully joined voice channel:', room);
+                });
+                
+                jitsiApi.addEventListener('readyToClose', () => {
+                    leaveVoiceChannel();
+                });
+
+                jitsiContainer.style.display = 'block';
+
+                // Update user count (simulate)
+                updateUserCount(channelElement, 1);
+            } catch (error) {
+                console.error('Error initializing Jitsi with 8x8.vc:', error);
+                loadFallbackJitsi(room, channelElement);
+            }
+        }
+
+        function loadFallbackJitsi(room, channelElement) {
+            console.log('Loading fallback Jitsi from meet.jit.si...');
+            
+            // Load the standard Jitsi API as fallback
+            if (!window.fallbackJitsiLoaded) {
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = 'https://meet.jit.si/external_api.js';
+                fallbackScript.onload = () => {
+                    window.fallbackJitsiLoaded = true;
+                    initializeFallbackJitsi(room, channelElement);
+                };
+                fallbackScript.onerror = () => {
+                    console.error('Failed to load fallback Jitsi API');
+                    alert('Voice chat is temporarily unavailable. Please try again later.');
+                    leaveVoiceChannel();
+                };
+                document.head.appendChild(fallbackScript);
+            } else {
+                initializeFallbackJitsi(room, channelElement);
+            }
+        }
+
+        function initializeFallbackJitsi(room, channelElement) {
+            try {
+                // Remove active class from all channels
+                channels.forEach(ch => ch.classList.remove('active'));
+                
+                // Add active class to current channel
+                channelElement.classList.add('active');
+                
+                // Show leave button
+                leaveBtn.classList.add('show');
+                
+                currentRoom = room;
+
+                const domain = 'meet.jit.si';
+                const options = {
+                    roomName: `MagicWorlds_${room}_${Math.random().toString(36).substr(2, 9)}`,
+                    width: '100%',
+                    height: '100%',
+                    parentNode: document.getElementById('jitsi-meet'),
+                    userInfo: {
+                        displayName: currentUsername
+                    },
+                    configOverwrite: {
+                        startWithAudioMuted: false,
+                        startWithVideoMuted: true,
+                        enableWelcomePage: false,
+                        prejoinPageEnabled: false
+                    },
+                    interfaceConfigOverwrite: {
+                        TOOLBAR_BUTTONS: [
+                            'microphone', 'camera', 'closedcaptions', 'desktop',
+                            'fullscreen', 'fodeviceselection', 'hangup',
+                            'profile', 'chat', 'settings', 'videoquality',
+                            'filmstrip', 'feedback', 'stats', 'shortcuts'
+                        ]
+                    }
+                };
+
+                jitsiApi = new JitsiMeetExternalAPI(domain, options);
+                jitsiContainer.style.display = 'block';
+
+                // Update user count (simulate)
+                updateUserCount(channelElement, 1);
+
+                console.log('Fallback Jitsi initialized successfully');
+            } catch (error) {
+                console.error('Error initializing fallback Jitsi:', error);
+                alert('Voice chat is currently unavailable. Please try again later.');
+                leaveVoiceChannel();
+            }
+        }
+
+        function leaveVoiceChannel() {
+            if (jitsiApi) {
+                jitsiApi.dispose();
+                jitsiApi = null;
+            }
+            
+            jitsiContainer.style.display = 'none';
+            
+            // Remove active class and hide leave button
+            channels.forEach(ch => ch.classList.remove('active'));
+            leaveBtn.classList.remove('show');
+            
+            currentRoom = '';
+        }
+
+        function updateUserCount(channelElement, change) {
+            const userCountElement = channelElement.querySelector('.user-count');
+            const currentCount = parseInt(userCountElement.textContent);
+            const newCount = Math.max(0, currentCount + change);
+            userCountElement.textContent = newCount;
+        }
+
+        // Event listeners
+        leaveBtn.addEventListener('click', leaveVoiceChannel);
+        closeJitsiBtn.addEventListener('click', leaveVoiceChannel);
+
+        // Simulate dynamic user counts
+        setInterval(() => {
+            channels.forEach(channel => {
+                if (!channel.classList.contains('active')) {
+                    const userCountElement = channel.querySelector('.user-count');
+                    const currentCount = parseInt(userCountElement.textContent);
+                    const change = Math.random() > 0.7 ? (Math.random() > 0.5 ? 1 : -1) : 0;
+                    const newCount = Math.max(0, Math.min(20, currentCount + change));
+                    userCountElement.textContent = newCount;
+                }
+            });
+        }, 10000);
+
+        // After ~4.5 seconds, fade out loading and show app
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.opacity = 0;
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                iframe.style.display = 'block';
+            }, 1000);
+            clearInterval(messageInterval);
+        }, 4500);
+
+        // Spoof standalone mode for Adalo
+        Object.defineProperty(window.navigator, 'standalone', {
+            value: true,
+            configurable: true
+        });
+
+        // Remove Add-to-Home banner if injected later
+        const hideBanner = () => {
+            const banner = document.querySelector('.add-to-home-screen-prompt, [data-testid="pwa-banner"]');
+            if (banner) banner.style.display = 'none';
+        };
+        setInterval(hideBanner, 1000);
+    </script>
 </body>
 </html>
