@@ -10,14 +10,13 @@
             height: 100%;
             background: #000;
             color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Loading screen */
         #loading-screen {
             display: flex;
             justify-content: center;
@@ -45,47 +44,26 @@
             display: none;
         }
 
-        /* Mobile full size (for phones/tablets) */
         .mobile-full {
             width: 100%;
             height: 100%;
         }
 
-        /* Fancy centered "mobile frame" for PC/Console users */
         .mobile-frame {
             width: 390px;
             height: 97vh;
             border-radius: 10px;
-            box-shadow: 0 0 60px rgba(255, 255, 255, 0.2),
-                        0 0 120px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.2);
             background: #fff;
             display: block;
             margin: auto;
-            position: relative;
-            z-index: 1;
         }
 
-        /* Extra glow effect behind iframe */
-        .mobile-frame::before {
-            content: "";
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%;
-            filter: blur(40px);
-            z-index: -1;
-        }
-
-        /* Compact Voice Chat Panel - Bottom Right */
         .vc-panel {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 320px;
-            max-height: 500px;
+            width: 300px;
             background: rgba(32, 34, 37, 0.95);
             border-radius: 12px;
             border: 1px solid rgba(88, 101, 242, 0.3);
@@ -93,23 +71,18 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             display: none;
             flex-direction: column;
-            overflow: hidden;
             z-index: 1000;
-            transition: all 0.3s ease;
         }
 
         .vc-panel.show {
             display: flex;
         }
 
-        /* VC Panel Header */
         .vc-header {
-            padding: 15px 20px;
+            padding: 15px;
             background: rgba(88, 101, 242, 0.1);
             border-bottom: 1px solid rgba(88, 101, 242, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
         }
 
         .vc-title {
@@ -119,32 +92,9 @@
             margin: 0;
         }
 
-        .minimize-btn {
-            background: none;
-            border: none;
-            color: #b3b3b3;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .minimize-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        /* Username Setup */
         .username-setup {
-            padding: 30px 20px;
+            padding: 20px;
             text-align: center;
-        }
-
-        .username-setup h3 {
-            color: #5865f2;
-            margin-bottom: 15px;
-            font-size: 16px;
         }
 
         .username-input {
@@ -155,13 +105,8 @@
             background: rgba(0, 0, 0, 0.3);
             color: #fff;
             font-size: 13px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .username-input:focus {
-            border-color: #5865f2;
         }
 
         .username-btn {
@@ -174,32 +119,11 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
-            transition: background-color 0.3s ease;
         }
 
-        .username-btn:hover {
-            background: #4752c4;
-        }
-
-        /* Channel List */
         .channels-list {
             padding: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .channels-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .channels-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-        }
-
-        .channels-list::-webkit-scrollbar-thumb {
-            background: rgba(88, 101, 242, 0.5);
-            border-radius: 2px;
+            display: none;
         }
 
         .vc-channel {
@@ -208,49 +132,24 @@
             padding: 12px;
             margin-bottom: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
         }
 
         .vc-channel:hover {
             background: rgba(88, 101, 242, 0.15);
             border-color: rgba(88, 101, 242, 0.4);
-            box-shadow: 0 0 15px rgba(88, 101, 242, 0.2);
-            transform: translateY(-1px);
         }
 
         .channel-name {
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 4px;
             color: #fff;
         }
 
-        .channel-info {
-            font-size: 11px;
-            color: #b3b3b3;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-count {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .user-count::before {
-            content: "👥";
-            font-size: 9px;
-        }
-
-        /* Voice Controls Panel */
         .voice-controls {
             display: none;
             flex-direction: column;
-            height: 100%;
+            padding: 15px;
         }
 
         .voice-controls.active {
@@ -258,124 +157,37 @@
         }
 
         .current-channel {
-            padding: 15px 20px;
             background: rgba(88, 101, 242, 0.1);
-            border-bottom: 1px solid rgba(88, 101, 242, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .current-channel-info h4 {
-            margin: 0 0 3px 0;
-            color: #5865f2;
-            font-size: 14px;
-        }
-
-        .current-channel-info span {
-            color: #b3b3b3;
-            font-size: 11px;
-        }
-
-        .back-btn {
-            background: rgba(237, 66, 69, 0.2);
-            color: #ed4245;
-            border: 1px solid rgba(237, 66, 69, 0.3);
+            padding: 10px;
             border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            text-align: center;
         }
 
-        .back-btn:hover {
-            background: rgba(237, 66, 69, 0.3);
-        }
-
-        /* Participants List */
         .participants-section {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
+            margin-bottom: 15px;
         }
 
         .participants-section h4 {
             color: #b3b3b3;
             font-size: 12px;
             margin: 0 0 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .participant {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 8px 0;
+            padding: 5px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .participant:last-child {
-            border-bottom: none;
-        }
-
-        .participant-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .participant-avatar {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #5865f2, #8a2be2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 600;
         }
 
         .participant-name {
             color: #fff;
             font-size: 12px;
-            font-weight: 500;
+            margin-left: 10px;
         }
 
-        .participant-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #43b581;
-        }
-
-        .status-indicator.muted {
-            background: #ed4245;
-        }
-
-        .status-indicator.speaking {
-            background: #5865f2;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Control Buttons */
         .control-buttons {
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             gap: 10px;
         }
@@ -387,280 +199,120 @@
             border-radius: 6px;
             font-size: 11px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .control-btn.mute {
             background: rgba(237, 66, 69, 0.2);
             color: #ed4245;
-            border: 1px solid rgba(237, 66, 69, 0.3);
         }
 
-        .control-btn.mute:hover {
+        .control-btn:hover {
             background: rgba(237, 66, 69, 0.3);
         }
 
-        .control-btn.mute.active {
-            background: rgba(67, 181, 129, 0.2);
-            color: #43b581;
-            border: 1px solid rgba(67, 181, 129, 0.3);
-        }
-
-        .control-btn.deafen {
-            background: rgba(255, 165, 0, 0.2);
-            color: #ffa500;
-            border: 1px solid rgba(255, 165, 0, 0.3);
-        }
-
-        .control-btn.deafen:hover {
-            background: rgba(255, 165, 0, 0.3);
-        }
-
-        .control-btn.deafen.active {
-            background: rgba(67, 181, 129, 0.2);
-            color: #43b581;
-            border: 1px solid rgba(67, 181, 129, 0.3);
-        }
-
-        /* Minimized State */
-        .vc-panel.minimized {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            bottom: 30px;
-            right: 30px;
-        }
-
-        .vc-panel.minimized .vc-header,
-        .vc-panel.minimized .username-setup,
-        .vc-panel.minimized .channels-list,
-        .vc-panel.minimized .voice-controls {
-            display: none;
-        }
-
-        .minimized-content {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .vc-panel.minimized .minimized-content {
-            display: flex;
-        }
-
-        .minimized-icon {
-            color: #5865f2;
-            font-size: 24px;
-        }
-
-        /* Jitsi Integration - Hidden but functional */
         #jitsi-container {
             position: fixed;
-            top: -9999px;
-            left: -9999px;
-            width: 400px;
-            height: 300px;
-            opacity: 0;
-            pointer-events: none;
+            top: -1000px;
+            left: -1000px;
+            width: 300px;
+            height: 200px;
         }
 
-        #jitsi-meet {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Hide on mobile */
         @media (max-width: 768px) {
-            .vc-panel {
-                display: none !important;
-            }
-        }
-
-        .connection-status {
-            padding: 10px;
-            text-align: center;
-            font-size: 11px;
-            color: #43b581;
-            background: rgba(67, 181, 129, 0.1);
-            border-radius: 4px;
-            margin: 5px 15px;
-        }
-
-        .connection-status.disconnected {
-            color: #ed4245;
-            background: rgba(237, 66, 69, 0.1);
+            .vc-panel { display: none !important; }
         }
     </style>
 </head>
 <body>
-    <!-- Fake Loading Screen -->
     <div id="loading-screen">
         <div id="loading-text">Please Wait…</div>
     </div>
 
-    <!-- Webapp frame -->
     <iframe id="app-frame"></iframe>
     
-    <!-- Compact Voice Chat Panel -->
     <div class="vc-panel" id="vc-panel">
-        <!-- Minimized Content -->
-        <div class="minimized-content" id="minimized-content">
-            <div class="minimized-icon">🎙️</div>
-        </div>
-
-        <!-- Header -->
         <div class="vc-header">
             <h3 class="vc-title">Voice Chat</h3>
-            <button class="minimize-btn" id="minimize-btn">−</button>
         </div>
 
-        <!-- Username Setup -->
         <div class="username-setup" id="username-setup">
-            <h3>Join Voice Chat</h3>
             <input type="text" class="username-input" id="username-input" placeholder="Enter username" maxlength="20">
-            <button class="username-btn" id="username-btn">Join</button>
+            <button class="username-btn" id="username-btn">Join Voice</button>
         </div>
 
-        <!-- Channels List -->
-        <div class="channels-list" id="channels-list" style="display: none;">
+        <div class="channels-list" id="channels-list">
             <div class="vc-channel" data-room="general">
-                <div class="channel-name">🎮 General</div>
-                <div class="channel-info">
-                    <span>General chat</span>
-                    <span class="user-count">0</span>
-                </div>
+                <div class="channel-name">🎮 General Chat</div>
             </div>
-
             <div class="vc-channel" data-room="gaming">
                 <div class="channel-name">🎯 Gaming</div>
-                <div class="channel-info">
-                    <span>Gaming hub</span>
-                    <span class="user-count">0</span>
-                </div>
             </div>
-
             <div class="vc-channel" data-room="chill">
                 <div class="channel-name">🎵 Chill Zone</div>
-                <div class="channel-info">
-                    <span>Relax & chat</span>
-                    <span class="user-count">0</span>
-                </div>
-            </div>
-
-            <div class="vc-channel" data-room="study">
-                <div class="channel-name">📚 Study Hall</div>
-                <div class="channel-info">
-                    <span>Focus together</span>
-                    <span class="user-count">0</span>
-                </div>
-            </div>
-
-            <div class="vc-channel" data-room="music">
-                <div class="channel-name">🎸 Music</div>
-                <div class="channel-info">
-                    <span>Share tunes</span>
-                    <span class="user-count">0</span>
-                </div>
             </div>
         </div>
 
-        <!-- Voice Controls -->
         <div class="voice-controls" id="voice-controls">
             <div class="current-channel">
-                <div class="current-channel-info">
-                    <h4 id="current-channel-name">General</h4>
-                    <span id="current-channel-desc">Connecting...</span>
-                </div>
-                <button class="back-btn" id="back-btn">Leave</button>
-            </div>
-
-            <div class="connection-status" id="connection-status">
-                Connecting to voice channel...
+                <div id="current-channel-name">Connected</div>
+                <div id="status">Online</div>
             </div>
 
             <div class="participants-section">
-                <h4>Participants (<span id="participant-count">0</span>)</h4>
-                <div id="participants-list">
-                    <!-- Real participants will be added here -->
-                </div>
+                <h4>People in voice (<span id="count">0</span>)</h4>
+                <div id="participants-list"></div>
             </div>
 
             <div class="control-buttons">
-                <button class="control-btn mute" id="mute-btn">🎤 Mute</button>
-                <button class="control-btn deafen" id="deafen-btn">🔇 Deafen</button>
+                <button class="control-btn" id="mute-btn">🎤 Mute</button>
+                <button class="control-btn" id="leave-btn">Leave</button>
             </div>
         </div>
     </div>
 
-    <!-- Jitsi Container - Hidden but functional -->
     <div id="jitsi-container">
         <div id="jitsi-meet"></div>
     </div>
 
-    <script src="https://8x8.vc/external_api.js"></script>
+    <script src="https://8x8.vc/external_api.js" async></script>
     <script>
-        const messages = [
-            "Connecting To Magic Worlds…",
-            "Please wait…",
-            "Connecting to Puweb server…",
-            "You're almost there…"
-        ];
-
+        // Wait for Jitsi API to load
+        function waitForJitsi() {
+            return new Promise((resolve) => {
+                if (typeof JitsiMeetExternalAPI !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = 'https://8x8.vc/external_api.js';
+                script.onload = resolve;
+                script.onerror = () => {
+                    console.error('Failed to load Jitsi API');
+                    resolve(); // Continue anyway
+                };
+                document.head.appendChild(script);
+            });
+        }
+        // Simple loading
         const loadingText = document.getElementById('loading-text');
+        const messages = ["Connecting To Magic Worlds…", "Please wait…", "Almost ready…"];
         let msgIndex = 0;
 
-        function showMessage(index) {
+        function showMessage() {
             loadingText.style.opacity = 0;
             setTimeout(() => {
-                loadingText.textContent = messages[index];
+                loadingText.textContent = messages[msgIndex];
                 loadingText.style.opacity = 1;
+                msgIndex = (msgIndex + 1) % messages.length;
             }, 500);
         }
 
-        showMessage(msgIndex);
-        const messageInterval = setInterval(() => {
-            msgIndex++;
-            if (msgIndex < messages.length) {
-                showMessage(msgIndex);
-            }
-        }, 1500);
+        showMessage();
+        const msgInterval = setInterval(showMessage, 2000);
 
-        // Voice chat system - FIXED VERSION
-        let jitsiApi = null;
-        let currentUsername = '';
-        let currentRoom = '';
-        let realParticipants = {};
-        let isMuted = false;
-        let isDeafened = false;
-        let isConnected = false;
-
-        // Detect device type
-        function isMobileDevice() {
-            return /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(navigator.userAgent);
-        }
-
-        // DOM elements
+        // Setup iframe
         const iframe = document.getElementById('app-frame');
         const vcPanel = document.getElementById('vc-panel');
-        const usernameSetup = document.getElementById('username-setup');
-        const channelsList = document.getElementById('channels-list');
-        const voiceControls = document.getElementById('voice-controls');
-        const usernameInput = document.getElementById('username-input');
-        const usernameBtn = document.getElementById('username-btn');
-        const minimizeBtn = document.getElementById('minimize-btn');
-        const minimizedContent = document.getElementById('minimized-content');
-        const backBtn = document.getElementById('back-btn');
-        const muteBtn = document.getElementById('mute-btn');
-        const deafenBtn = document.getElementById('deafen-btn');
-        const participantsList = document.getElementById('participants-list');
-        const connectionStatus = document.getElementById('connection-status');
-        const participantCount = document.getElementById('participant-count');
 
-        // Set iframe source based on device
-        if (isMobileDevice()) {
+        if (/android|iphone|ipad/i.test(navigator.userAgent)) {
             iframe.src = "https://t.me/magicworldsbot/?startapp";
             iframe.classList.add("mobile-full");
         } else {
@@ -669,447 +321,155 @@
             vcPanel.classList.add("show");
         }
 
+        // Voice chat variables
+        let jitsiApi = null;
+        let username = '';
+        let currentRoom = '';
+        let participants = new Set();
+
+        // Elements
+        const usernameSetup = document.getElementById('username-setup');
+        const channelsList = document.getElementById('channels-list');
+        const voiceControls = document.getElementById('voice-controls');
+        const usernameInput = document.getElementById('username-input');
+        const usernameBtn = document.getElementById('username-btn');
+        const participantsList = document.getElementById('participants-list');
+        const participantCount = document.getElementById('count');
+        const muteBtn = document.getElementById('mute-btn');
+        const leaveBtn = document.getElementById('leave-btn');
+
         // Username setup
-        usernameBtn.addEventListener('click', () => {
-            const username = usernameInput.value.trim();
+        usernameBtn.onclick = () => {
+            username = usernameInput.value.trim();
             if (username.length >= 2) {
-                currentUsername = username;
                 usernameSetup.style.display = 'none';
                 channelsList.style.display = 'block';
-            } else {
-                alert('Username must be at least 2 characters long');
             }
-        });
-
-        usernameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                usernameBtn.click();
-            }
-        });
-
-        // Minimize functionality
-        minimizeBtn.addEventListener('click', () => {
-            vcPanel.classList.add('minimized');
-        });
-
-        minimizedContent.addEventListener('click', () => {
-            vcPanel.classList.remove('minimized');
-        });
+        };
 
         // Channel selection
-        const channels = document.querySelectorAll('.vc-channel');
-        channels.forEach(channel => {
-            channel.addEventListener('click', () => {
-                if (!currentUsername) return;
-                
+        document.querySelectorAll('.vc-channel').forEach(channel => {
+            channel.onclick = () => {
+                if (!username) return;
                 const room = channel.dataset.room;
-                const channelName = channel.querySelector('.channel-name').textContent;
-                joinVoiceChannel(room, channelName);
-            });
+                const name = channel.querySelector('.channel-name').textContent;
+                joinChannel(room, name);
+            };
         });
 
-        // REAL participant management (no more fake users)
-        function addRealParticipant(participantId, displayName) {
-            if (realParticipants[participantId]) return;
-            
-            console.log('Adding real participant:', displayName);
-            
-            realParticipants[participantId] = {
-                name: displayName,
-                status: 'connected',
-                element: null
-            };
-            
-            const participant = document.createElement('div');
-            participant.className = 'participant';
-            participant.innerHTML = `
-                <div class="participant-info">
-                    <div class="participant-avatar">${displayName.charAt(0).toUpperCase()}</div>
-                    <div class="participant-name">${displayName}</div>
-                </div>
-                <div class="participant-status">
-                    <div class="status-indicator connected"></div>
-                </div>
-            `;
-            
-            realParticipants[participantId].element = participant;
-            participantsList.appendChild(participant);
-            updateParticipantCount();
-        }
-
-        function removeRealParticipant(participantId) {
-            if (!realParticipants[participantId]) return;
-            
-            console.log('Removing real participant:', realParticipants[participantId].name);
-            
-            if (realParticipants[participantId].element) {
-                realParticipants[participantId].element.remove();
-            }
-            delete realParticipants[participantId];
-            updateParticipantCount();
-        }
-
-        function updateParticipantCount() {
-            const count = Object.keys(realParticipants).length;
-            participantCount.textContent = count;
-            
-            // Update channel user counts with real data
-            if (currentRoom) {
-                const currentChannel = document.querySelector(`[data-room="${currentRoom}"] .user-count`);
-                if (currentChannel) {
-                    currentChannel.textContent = count;
-                }
-            }
-        }
-
-        function updateParticipantAudioStatus(participantId, isAudioMuted) {
-            if (!realParticipants[participantId]) return;
-            
-            const participant = realParticipants[participantId];
-            const statusIndicator = participant.element.querySelector('.status-indicator');
-            
-            if (isAudioMuted) {
-                participant.status = 'muted';
-                statusIndicator.className = 'status-indicator muted';
-            } else {
-                participant.status = 'connected';
-                statusIndicator.className = 'status-indicator connected';
-            }
-        }
-
-        function joinVoiceChannel(room, channelName) {
+        // Join voice channel
+        async function joinChannel(room, name) {
             currentRoom = room;
-            
-            // Switch to voice controls view
             channelsList.style.display = 'none';
             voiceControls.classList.add('active');
+            document.getElementById('current-channel-name').textContent = name;
+            document.getElementById('status').textContent = 'Connecting...';
             
-            // Update current channel info
-            document.getElementById('current-channel-name').textContent = channelName;
-            document.getElementById('current-channel-desc').textContent = `Connecting as ${currentUsername}`;
+            // Clear participants
+            participants.clear();
+            updateParticipants();
             
-            // Clear participants list (no more fake participants)
-            participantsList.innerHTML = '';
-            realParticipants = {};
-            updateParticipantCount();
-            
-            // Show connecting status
-            connectionStatus.textContent = 'Connecting to voice channel...';
-            connectionStatus.className = 'connection-status';
-
-            // Initialize real Jitsi connection
-            initializeJitsi(room);
+            // Wait for Jitsi to be ready, then start
+            await waitForJitsi();
+            initJitsi(room);
         }
 
-        function initializeJitsi(room) {
+        // Initialize Jitsi
+        function initJitsi(room) {
+            if (jitsiApi) {
+                jitsiApi.dispose();
+            }
+
+            // Check if Jitsi API is loaded
+            if (typeof JitsiMeetExternalAPI === 'undefined') {
+                console.error('Jitsi API not loaded');
+                document.getElementById('status').textContent = 'Voice chat unavailable';
+                return;
+            }
+
+            const roomName = `vpaas-magic-cookie-b918ae7c571a48529574480b276e6bf6/MagicWorlds-${room}`;
+            
             try {
-                if (typeof JitsiMeetExternalAPI === 'undefined') {
-                    console.error('Jitsi API not loaded');
-                    connectionStatus.textContent = 'Voice chat unavailable - API not loaded';
-                    connectionStatus.className = 'connection-status disconnected';
-                    return;
-                }
-
-                // Clean up existing connection
-                if (jitsiApi) {
-                    jitsiApi.dispose();
-                    jitsiApi = null;
-                }
-
-                const domain = '8x8.vc';
-                const roomName = `vpaas-magic-cookie-b918ae7c571a48529574480b276e6bf6/MagicWorlds_${room}_${Date.now()}`;
-                
-                const options = {
+                jitsiApi = new JitsiMeetExternalAPI('8x8.vc', {
                     roomName: roomName,
                     width: '100%',
                     height: '100%',
                     parentNode: document.getElementById('jitsi-meet'),
-                    userInfo: {
-                        displayName: currentUsername
-                    },
+                    userInfo: { displayName: username },
                     configOverwrite: {
                         startWithAudioMuted: false,
                         startWithVideoMuted: true,
-                        enableWelcomePage: false,
-                        prejoinPageEnabled: false,
-                        disableDeepLinking: true,
-                        toolbarButtons: [],
-                        disableInviteFunctions: true,
-                        doNotStoreRoom: true
-                    },
-                    interfaceConfigOverwrite: {
-                        SHOW_JITSI_WATERMARK: false,
-                        SHOW_WATERMARK_FOR_GUESTS: false,
-                        DISABLE_VIDEO_BACKGROUND: true,
-                        filmStripOnly: true,
-                        HIDE_INVITE_MORE_HEADER: true
+                        prejoinPageEnabled: false
                     }
-                };
-
-                jitsiApi = new JitsiMeetExternalAPI(domain, options);
-                
-                // Set up real event listeners
-                jitsiApi.addEventListeners({
-                    readyToClose: handleReadyToClose,
-                    participantJoined: handleParticipantJoined,
-                    participantLeft: handleParticipantLeft,
-                    audioMuteStatusChanged: handleAudioMuteStatusChanged,
-                    videoMuteStatusChanged: handleVideoMuteStatusChanged,
-                    readyToClose: handleReadyToClose
                 });
 
-                // Connection established
-                jitsiApi.addEventListener('videoConferenceJoined', (event) => {
-                    console.log('Successfully joined conference:', event);
-                    isConnected = true;
-                    connectionStatus.textContent = 'Connected to voice channel';
-                    connectionStatus.className = 'connection-status';
-                    document.getElementById('current-channel-desc').textContent = `Connected as ${currentUsername}`;
-                    
-                    // Add self as participant
-                    addRealParticipant('local', currentUsername);
+                // Event listeners
+                jitsiApi.addEventListener('participantJoined', (event) => {
+                    participants.add(event.displayName || 'User');
+                    updateParticipants();
                 });
 
-                jitsiApi.addEventListener('videoConferenceLeft', (event) => {
-                    console.log('Left conference:', event);
-                    isConnected = false;
-                    connectionStatus.textContent = 'Disconnected from voice channel';
-                    connectionStatus.className = 'connection-status disconnected';
+                jitsiApi.addEventListener('participantLeft', (event) => {
+                    participants.delete(event.displayName || 'User');
+                    updateParticipants();
                 });
 
-                console.log('Jitsi initialized for room:', roomName);
-                
+                jitsiApi.addEventListener('videoConferenceJoined', () => {
+                    participants.add(username);
+                    updateParticipants();
+                    document.getElementById('status').textContent = 'Connected';
+                });
+
             } catch (error) {
-                console.error('Jitsi initialization failed:', error);
-                connectionStatus.textContent = 'Failed to connect to voice channel';
-                connectionStatus.className = 'connection-status disconnected';
+                console.error('Jitsi failed:', error);
+                document.getElementById('status').textContent = 'Connection failed';
             }
         }
 
-        // Real Jitsi event handlers
-        function handleParticipantJoined(participant) {
-            console.log('Participant joined:', participant);
-            addRealParticipant(participant.id, participant.displayName || 'Guest');
-        }
-
-        function handleParticipantLeft(participant) {
-            console.log('Participant left:', participant);
-            removeRealParticipant(participant.id);
-        }
-
-        function handleAudioMuteStatusChanged(event) {
-            console.log('Audio mute status changed:', event);
-            if (event.id) {
-                updateParticipantAudioStatus(event.id, event.muted);
-            } else {
-                // Self mute status changed
-                isMuted = event.muted;
-                updateMuteButton();
-            }
-        }
-
-        function handleVideoMuteStatusChanged(event) {
-            console.log('Video mute status changed:', event);
-            // We don't show video status in this UI, but we can log it
-        }
-
-        function handleReadyToClose() {
-            console.log('Jitsi is ready to close');
-            leaveVoiceChannel();
-        }
-
-        function updateMuteButton() {
-            if (isMuted) {
-                muteBtn.textContent = '🔇 Unmute';
-                muteBtn.classList.add('active');
-            } else {
-                muteBtn.textContent = '🎤 Mute';
-                muteBtn.classList.remove('active');
-            }
-        }
-
-        function updateDeafenButton() {
-            if (isDeafened) {
-                deafenBtn.textContent = '🔊 Undeafen';
-                deafenBtn.classList.add('active');
-            } else {
-                deafenBtn.textContent = '🔇 Deafen';
-                deafenBtn.classList.remove('active');
-            }
-        }
-
-        // Fixed control buttons
-        muteBtn.addEventListener('click', () => {
-            if (!jitsiApi || !isConnected) {
-                console.log('Cannot toggle mute: not connected');
-                return;
-            }
+        // Update participants display
+        function updateParticipants() {
+            participantsList.innerHTML = '';
+            participantCount.textContent = participants.size;
             
-            try {
-                jitsiApi.executeCommand('toggleAudio');
-                // Status will be updated via the event handler
-            } catch (error) {
-                console.error('Failed to toggle audio:', error);
-                // Manual toggle as fallback
-                isMuted = !isMuted;
-                updateMuteButton();
-            }
-        });
+            participants.forEach(name => {
+                const div = document.createElement('div');
+                div.className = 'participant';
+                div.innerHTML = `<div class="participant-name">${name}</div>`;
+                participantsList.appendChild(div);
+            });
+        }
 
-        deafenBtn.addEventListener('click', () => {
-            if (!jitsiApi || !isConnected) {
-                console.log('Cannot toggle deafen: not connected');
-                return;
-            }
-            
-            // Deafen is a local action - mute our output
-            isDeafened = !isDeafened;
-            updateDeafenButton();
-            
-            try {
-                // Set master volume to 0 when deafened
-                if (isDeafened) {
-                    jitsiApi.executeCommand('setParticipantsVolume', 0);
-                } else {
-                    jitsiApi.executeCommand('setParticipantsVolume', 1);
-                }
-            } catch (error) {
-                console.error('Failed to set volume:', error);
-            }
-        });
-
-        backBtn.addEventListener('click', () => {
-            leaveVoiceChannel();
-        });
-
-        function leaveVoiceChannel() {
+        // Controls
+        let muted = false;
+        muteBtn.onclick = () => {
             if (jitsiApi) {
-                try {
-                    jitsiApi.executeCommand('hangup');
-                    jitsiApi.dispose();
-                } catch (error) {
-                    console.error('Error disposing Jitsi:', error);
-                }
+                jitsiApi.executeCommand('toggleAudio');
+                muted = !muted;
+                muteBtn.textContent = muted ? '🔇 Unmute' : '🎤 Mute';
+            }
+        };
+
+        leaveBtn.onclick = () => {
+            if (jitsiApi) {
+                jitsiApi.dispose();
                 jitsiApi = null;
             }
-            
-            // Clear state
-            currentRoom = '';
-            isConnected = false;
-            realParticipants = {};
-            
-            // Reset UI
             voiceControls.classList.remove('active');
             channelsList.style.display = 'block';
-            
-            // Reset controls
-            isMuted = false;
-            isDeafened = false;
-            updateMuteButton();
-            updateDeafenButton();
-            
-            // Clear participants
-            participantsList.innerHTML = '';
-            updateParticipantCount();
-        }
+            participants.clear();
+            muted = false;
+            muteBtn.textContent = '🎤 Mute';
+        };
 
-        // Clean up any fake simulation code - REMOVED ALL FAKE PARTICIPANTS
-        // No more setInterval for fake speaking indicators
-        // No more fake user count updates
-        // No more sample participants
-
-        // Loading sequence
+        // Finish loading
         setTimeout(() => {
+            clearInterval(msgInterval);
             document.getElementById('loading-screen').style.opacity = 0;
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 iframe.style.display = 'block';
             }, 1000);
-            clearInterval(messageInterval);
-        }, 4500);
-
-        // Spoof standalone mode for Adalo
-        Object.defineProperty(window.navigator, 'standalone', {
-            value: true,
-            configurable: true
-        });
-
-        // Remove Add-to-Home banner
-        const hideBanner = () => {
-            const banner = document.querySelector('.add-to-home-screen-prompt, [data-testid="pwa-banner"]');
-            if (banner) banner.style.display = 'none';
-        };
-        setInterval(hideBanner, 1000);
-
-        // Error handling for microphone permissions
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(() => {
-                console.log('Microphone access granted');
-            })
-            .catch((error) => {
-                console.error('Microphone access denied:', error);
-                if (connectionStatus) {
-                    connectionStatus.textContent = 'Microphone access required for voice chat';
-                    connectionStatus.className = 'connection-status disconnected';
-                }
-            });
-
-        // Add connection quality monitoring
-        let connectionCheckInterval;
-
-        function startConnectionMonitoring() {
-            connectionCheckInterval = setInterval(() => {
-                if (jitsiApi && isConnected) {
-                    try {
-                        // Check if Jitsi API is still responsive
-                        jitsiApi.getParticipantsInfo().then((participants) => {
-                            console.log('Active participants:', participants.length);
-                        }).catch((error) => {
-                            console.warn('Connection may be unstable:', error);
-                        });
-                    } catch (error) {
-                        console.warn('Connection monitoring error:', error);
-                    }
-                }
-            }, 30000); // Check every 30 seconds
-        }
-
-        function stopConnectionMonitoring() {
-            if (connectionCheckInterval) {
-                clearInterval(connectionCheckInterval);
-                connectionCheckInterval = null;
-            }
-        }
-
-        // Start monitoring when joining a channel
-        function enhancedJoinVoiceChannel(room, channelName) {
-            joinVoiceChannel(room, channelName);
-            startConnectionMonitoring();
-        }
-
-        function enhancedLeaveVoiceChannel() {
-            stopConnectionMonitoring();
-            leaveVoiceChannel();
-        }
-
-        // Update channel click handlers to use enhanced functions
-        channels.forEach(channel => {
-            // Remove old event listeners and add new ones
-            const newChannel = channel.cloneNode(true);
-            channel.parentNode.replaceChild(newChannel, channel);
-            
-            newChannel.addEventListener('click', () => {
-                if (!currentUsername) return;
-                
-                const room = newChannel.dataset.room;
-                const channelName = newChannel.querySelector('.channel-name').textContent;
-                enhancedJoinVoiceChannel(room, channelName);
-            });
-        });
-
-        // Update back button to use enhanced leave function
-        backBtn.removeEventListener('click', leaveVoiceChannel);
-        backBtn.addEventListener('click', enhancedLeaveVoiceChannel);
+        }, 4000);
     </script>
 </body>
 </html>
