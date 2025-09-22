@@ -259,19 +259,6 @@
             });
         }
 
-        // Request microphone permissions
-        async function requestMicPermission() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(track => track.stop()); // Stop the stream after permission is granted
-                console.log('Microphone permission granted');
-                return true;
-            } catch (error) {
-                console.error('Microphone permission denied:', error);
-                return false;
-            }
-        }
-
         // Simple loading
         const loadingText = document.getElementById('loading-text');
         const messages = ["Connecting To Magic Worlds…", "Please wait…", "Almost ready…"];
@@ -351,13 +338,6 @@
             // Clear participants
             participantMap.clear();
             updateParticipants();
-
-            // Request microphone permission
-            const hasMicPermission = await requestMicPermission();
-            if (!hasMicPermission) {
-                document.getElementById('status').textContent = 'Microphone permission denied';
-                return;
-            }
 
             // Wait for Jitsi and initialize
             try {
