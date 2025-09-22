@@ -16,7 +16,6 @@
             justify-content: center;
             align-items: center;
         }
-
         #loading-screen {
             display: flex;
             justify-content: center;
@@ -33,22 +32,18 @@
             background: #000;
             transition: opacity 1s ease-in-out;
         }
-
         #loading-text {
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
-
         iframe {
             border: none;
             display: none;
         }
-
         .mobile-full {
             width: 100%;
             height: 100%;
         }
-
         .mobile-frame {
             width: 390px;
             height: 97vh;
@@ -58,7 +53,6 @@
             display: block;
             margin: auto;
         }
-
         .vc-panel {
             position: fixed;
             bottom: 20px;
@@ -73,30 +67,25 @@
             flex-direction: column;
             z-index: 1000;
         }
-
         .vc-panel.show {
             display: flex;
         }
-
         .vc-header {
             padding: 15px;
             background: rgba(88, 101, 242, 0.1);
             border-bottom: 1px solid rgba(88, 101, 242, 0.2);
             text-align: center;
         }
-
         .vc-title {
             color: #5865f2;
             font-size: 14px;
             font-weight: 600;
             margin: 0;
         }
-
         .username-setup {
             padding: 20px;
             text-align: center;
         }
-
         .username-input {
             width: 100%;
             padding: 10px;
@@ -108,7 +97,6 @@
             margin-bottom: 10px;
             outline: none;
         }
-
         .username-btn {
             width: 100%;
             padding: 10px;
@@ -120,12 +108,10 @@
             font-size: 13px;
             font-weight: 600;
         }
-
         .channels-list {
             padding: 15px;
             display: none;
         }
-
         .vc-channel {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 8px;
@@ -134,28 +120,23 @@
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .vc-channel:hover {
             background: rgba(88, 101, 242, 0.15);
             border-color: rgba(88, 101, 242, 0.4);
         }
-
         .channel-name {
             font-size: 13px;
             font-weight: 600;
             color: #fff;
         }
-
         .voice-controls {
             display: none;
             flex-direction: column;
             padding: 15px;
         }
-
         .voice-controls.active {
             display: flex;
         }
-
         .current-channel {
             background: rgba(88, 101, 242, 0.1);
             padding: 10px;
@@ -163,35 +144,29 @@
             margin-bottom: 10px;
             text-align: center;
         }
-
         .participants-section {
             margin-bottom: 15px;
         }
-
         .participants-section h4 {
             color: #b3b3b3;
             font-size: 12px;
             margin: 0 0 10px 0;
         }
-
         .participant {
             display: flex;
             align-items: center;
             padding: 5px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .participant-name {
             color: #fff;
             font-size: 12px;
             margin-left: 10px;
         }
-
         .control-buttons {
             display: flex;
             gap: 10px;
         }
-
         .control-btn {
             flex: 1;
             padding: 8px;
@@ -202,11 +177,9 @@
             background: rgba(237, 66, 69, 0.2);
             color: #ed4245;
         }
-
         .control-btn:hover {
             background: rgba(237, 66, 69, 0.3);
         }
-
         #jitsi-container {
             position: fixed;
             top: -1000px;
@@ -214,7 +187,6 @@
             width: 300px;
             height: 200px;
         }
-
         @media (max-width: 768px) {
             .vc-panel { display: none !important; }
         }
@@ -224,19 +196,16 @@
     <div id="loading-screen">
         <div id="loading-text">Please Wait…</div>
     </div>
-
     <iframe id="app-frame"></iframe>
-    
+   
     <div class="vc-panel" id="vc-panel">
         <div class="vc-header">
             <h3 class="vc-title">Voice Chat</h3>
         </div>
-
         <div class="username-setup" id="username-setup">
             <input type="text" class="username-input" id="username-input" placeholder="Enter username" maxlength="20">
             <button class="username-btn" id="username-btn">Join Voice</button>
         </div>
-
         <div class="channels-list" id="channels-list">
             <div class="vc-channel" data-room="general">
                 <div class="channel-name">🎮 General Chat</div>
@@ -248,30 +217,25 @@
                 <div class="channel-name">🎵 Chill Zone</div>
             </div>
         </div>
-
         <div class="voice-controls" id="voice-controls">
             <div class="current-channel">
                 <div id="current-channel-name">Connected</div>
                 <div id="status">Online</div>
             </div>
-
             <div class="participants-section">
                 <h4>People in voice (<span id="count">0</span>)</h4>
                 <div id="participants-list"></div>
             </div>
-
             <div class="control-buttons">
                 <button class="control-btn" id="mute-btn">🎤 Mute</button>
                 <button class="control-btn" id="leave-btn">Leave</button>
             </div>
         </div>
     </div>
-
     <div id="jitsi-container">
         <div id="jitsi-meet"></div>
     </div>
-
-    <script src="https://8x8.vc/external_api.js" async></script>
+    <script src="https://meet.jit.si/external_api.js" async></script>
     <script>
         // Wait for Jitsi API to load
         function waitForJitsi() {
@@ -280,9 +244,9 @@
                     resolve();
                     return;
                 }
-                
+               
                 const script = document.createElement('script');
-                script.src = 'https://8x8.vc/external_api.js';
+                script.src = 'https://meet.jit.si/external_api.js';
                 script.onload = resolve;
                 script.onerror = () => {
                     console.error('Failed to load Jitsi API');
@@ -295,7 +259,6 @@
         const loadingText = document.getElementById('loading-text');
         const messages = ["Connecting To Magic Worlds…", "Please wait…", "Almost ready…"];
         let msgIndex = 0;
-
         function showMessage() {
             loadingText.style.opacity = 0;
             setTimeout(() => {
@@ -304,14 +267,11 @@
                 msgIndex = (msgIndex + 1) % messages.length;
             }, 500);
         }
-
         showMessage();
         const msgInterval = setInterval(showMessage, 2000);
-
         // Setup iframe
         const iframe = document.getElementById('app-frame');
         const vcPanel = document.getElementById('vc-panel');
-
         if (/android|iphone|ipad/i.test(navigator.userAgent)) {
             iframe.src = "https://t.me/magicworldsbot/?startapp";
             iframe.classList.add("mobile-full");
@@ -320,13 +280,11 @@
             iframe.classList.add("mobile-frame");
             vcPanel.classList.add("show");
         }
-
         // Voice chat variables
         let jitsiApi = null;
         let username = '';
         let currentRoom = '';
-        let participants = new Set();
-
+        let participantMap = new Map();
         // Elements
         const usernameSetup = document.getElementById('username-setup');
         const channelsList = document.getElementById('channels-list');
@@ -337,7 +295,6 @@
         const participantCount = document.getElementById('count');
         const muteBtn = document.getElementById('mute-btn');
         const leaveBtn = document.getElementById('leave-btn');
-
         // Username setup
         usernameBtn.onclick = () => {
             username = usernameInput.value.trim();
@@ -346,7 +303,6 @@
                 channelsList.style.display = 'block';
             }
         };
-
         // Channel selection
         document.querySelectorAll('.vc-channel').forEach(channel => {
             channel.onclick = () => {
@@ -356,7 +312,6 @@
                 joinChannel(room, name);
             };
         });
-
         // Join voice channel
         async function joinChannel(room, name) {
             currentRoom = room;
@@ -364,33 +319,30 @@
             voiceControls.classList.add('active');
             document.getElementById('current-channel-name').textContent = name;
             document.getElementById('status').textContent = 'Connecting...';
-            
+           
             // Clear participants
-            participants.clear();
+            participantMap.clear();
             updateParticipants();
-            
+           
             // Wait for Jitsi to be ready, then start
             await waitForJitsi();
             initJitsi(room);
         }
-
         // Initialize Jitsi
         function initJitsi(room) {
             if (jitsiApi) {
                 jitsiApi.dispose();
             }
-
             // Check if Jitsi API is loaded
             if (typeof JitsiMeetExternalAPI === 'undefined') {
                 console.error('Jitsi API not loaded');
                 document.getElementById('status').textContent = 'Voice chat unavailable';
                 return;
             }
-
-            const roomName = `vpaas-magic-cookie-b918ae7c571a48529574480b276e6bf6/MagicWorlds-${room}`;
-            
+            const roomName = `MagicWorlds-${room}`;
+           
             try {
-                jitsiApi = new JitsiMeetExternalAPI('8x8.vc', {
+                jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', {
                     roomName: roomName,
                     width: '100%',
                     height: '100%',
@@ -402,43 +354,52 @@
                         prejoinPageEnabled: false
                     }
                 });
-
                 // Event listeners
                 jitsiApi.addEventListener('participantJoined', (event) => {
-                    participants.add(event.displayName || 'User');
+                    const name = event.displayName || 'User';
+                    participantMap.set(event.id, name);
                     updateParticipants();
                 });
-
                 jitsiApi.addEventListener('participantLeft', (event) => {
-                    participants.delete(event.displayName || 'User');
+                    participantMap.delete(event.id);
                     updateParticipants();
                 });
-
+                jitsiApi.addEventListener('displayNameChanged', (event) => {
+                    if (participantMap.has(event.id)) {
+                        participantMap.set(event.id, event.displayname || 'User');
+                        updateParticipants();
+                    }
+                });
                 jitsiApi.addEventListener('videoConferenceJoined', () => {
-                    participants.add(username);
-                    updateParticipants();
-                    document.getElementById('status').textContent = 'Connected';
+                    // Get initial participants
+                    jitsiApi.getRoomsInfo().then(rooms => {
+                        const mainRoom = rooms.rooms.find(r => r.isMainRoom);
+                        if (mainRoom) {
+                            mainRoom.participants.forEach(p => {
+                                participantMap.set(p.id, p.displayName || 'User');
+                            });
+                        }
+                        updateParticipants();
+                        document.getElementById('status').textContent = 'Connected';
+                    });
                 });
-
             } catch (error) {
                 console.error('Jitsi failed:', error);
                 document.getElementById('status').textContent = 'Connection failed';
             }
         }
-
         // Update participants display
         function updateParticipants() {
             participantsList.innerHTML = '';
-            participantCount.textContent = participants.size;
-            
-            participants.forEach(name => {
+            participantCount.textContent = participantMap.size;
+           
+            [...participantMap.values()].forEach(name => {
                 const div = document.createElement('div');
                 div.className = 'participant';
                 div.innerHTML = `<div class="participant-name">${name}</div>`;
                 participantsList.appendChild(div);
             });
         }
-
         // Controls
         let muted = false;
         muteBtn.onclick = () => {
@@ -448,7 +409,6 @@
                 muteBtn.textContent = muted ? '🔇 Unmute' : '🎤 Mute';
             }
         };
-
         leaveBtn.onclick = () => {
             if (jitsiApi) {
                 jitsiApi.dispose();
@@ -456,11 +416,10 @@
             }
             voiceControls.classList.remove('active');
             channelsList.style.display = 'block';
-            participants.clear();
+            participantMap.clear();
             muted = false;
             muteBtn.textContent = '🎤 Mute';
         };
-
         // Finish loading
         setTimeout(() => {
             clearInterval(msgInterval);
