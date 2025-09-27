@@ -53,147 +53,90 @@
             display: block;
             margin: auto;
         }
-        .vc-panel {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: rgba(32, 34, 37, 0.95);
-            border-radius: 12px;
-            border: 1px solid rgba(88, 101, 242, 0.3);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            display: none;
-            flex-direction: column;
-            z-index: 1000;
-        }
-        .vc-panel.show {
-            display: flex;
-        }
-        .vc-header {
-            padding: 15px;
-            background: rgba(88, 101, 242, 0.1);
-            border-bottom: 1px solid rgba(88, 101, 242, 0.2);
-            text-align: center;
-        }
-        .vc-title {
-            color: #5865f2;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0;
-        }
-        .username-setup {
-            padding: 20px;
-            text-align: center;
-        }
-        .username-input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid rgba(88, 101, 242, 0.3);
-            border-radius: 6px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-size: 13px;
-            margin-bottom: 10px;
-            outline: none;
-        }
-        .username-btn {
-            width: 100%;
-            padding: 10px;
-            background: #5865f2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .channels-list {
-            padding: 15px;
-            display: none;
-        }
-        .vc-channel {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .vc-channel:hover {
-            background: rgba(88, 101, 242, 0.15);
-            border-color: rgba(88, 101, 242, 0.4);
-        }
-        .channel-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-        }
-        .voice-controls {
-            display: none;
-            flex-direction: column;
-            padding: 15px;
-        }
-        .voice-controls.active {
-            display: flex;
-        }
-        .current-channel {
-            background: rgba(88, 101, 242, 0.1);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .participants-section {
-            margin-bottom: 15px;
-        }
-        .participants-section h4 {
-            color: #b3b3b3;
-            font-size: 12px;
-            margin: 0 0 10px 0;
-        }
-        .participant {
-            display: flex;
-            align-items: center;
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .participant-name {
-            color: #fff;
-            font-size: 12px;
-            margin-left: 10px;
-        }
-        .control-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .control-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            background: rgba(237, 66, 69, 0.2);
-            color: #ed4245;
-        }
-        .control-btn:hover {
-            background: rgba(237, 66, 69, 0.3);
-        }
-        #jitsi-container {
+        .webpage-panel {
             position: fixed;
             bottom: 20px;
             right: 20px;
             width: 300px;
             height: 400px;
-            z-index: 999;
             background: rgba(32, 34, 37, 0.95);
             border-radius: 12px;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.5s ease-in-out;
             overflow: hidden;
         }
+        .webpage-panel.closed {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .webpage-panel.closed:hover {
+            background: rgba(88, 101, 242, 0.15);
+        }
+        .mic-icon {
+            font-size: 24px;
+            color: #5865f2;
+            transition: opacity 0.3s ease-in-out;
+            user-select: none; /* Prevent text selection */
+            pointer-events: none; /* Prevent direct clicks on icon */
+        }
+        .webpage-panel:not(.closed) .mic-icon {
+            opacity: 0;
+        }
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: rgba(237, 66, 69, 0.2);
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            color: #ed4245;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+            user-select: none; /* Prevent text selection */
+        }
+        .close-icon:hover {
+            background: rgba(237, 66, 69, 0.3);
+        }
+        .webpage-panel:not(.closed) .close-icon {
+            display: flex;
+        }
+        .webpage-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+        .webpage-panel.closed .webpage-iframe {
+            display: none;
+        }
+        .fallback-message {
+            display: none;
+            text-align: center;
+            font-size: 14px;
+            color: #ed4245;
+            padding: 20px;
+        }
+        .webpage-panel.error .webpage-iframe {
+            display: none;
+        }
+        .webpage-panel.error .fallback-message {
+            display: block;
+        }
         @media (max-width: 768px) {
-            .vc-panel { display: none !important; }
-            #jitsi-container { display: none; }
+            .webpage-panel { display: none !important; }
         }
     </style>
 </head>
@@ -203,67 +146,13 @@
     </div>
     <iframe id="app-frame"></iframe>
    
-    <div class="vc-panel" id="vc-panel">
-        <div class="vc-header">
-            <h3 class="vc-title">Voice Chat</h3>
-        </div>
-        <div class="username-setup" id="username-setup">
-            <input type="text" class="username-input" id="username-input" placeholder="Enter username" maxlength="20">
-            <button class="username-btn" id="username-btn">Join Voice</button>
-        </div>
-        <div class="channels-list" id="channels-list">
-            <div class="vc-channel" data-room="general">
-                <div class="channel-name">🎮 General Chat</div>
-            </div>
-            <div class="vc-channel" data-room="gaming">
-                <div class="channel-name">🎯 Gaming</div>
-            </div>
-            <div class="vc-channel" data-room="chill">
-                <div class="channel-name">🎵 Chill Zone</div>
-            </div>
-        </div>
-        <div class="voice-controls" id="voice-controls">
-            <div class="current-channel">
-                <div id="current-channel-name">Connected</div>
-                <div id="status">Online</div>
-            </div>
-            <div class="participants-section">
-                <h4>People in voice (<span id="count">0</span>)</h4>
-                <div id="participants-list"></div>
-            </div>
-            <div class="control-buttons">
-                <button class="control-btn" id="mute-btn">🎤 Mute</button>
-                <button class="control-btn" id="leave-btn">Leave</button>
-            </div>
-        </div>
+    <div class="webpage-panel" id="webpage-panel">
+        <span class="mic-icon">🎤</span>
+        <span class="close-icon" id="close-icon">✖</span>
+        <iframe class="webpage-iframe" id="webpage-iframe" src="https://previewer.adalo.com/9a617ecf-1f98-45a1-a2c1-657fc4b4922e"></iframe>
+        <div class="fallback-message" id="fallback-message">Failed to load webpage. Please try again later.</div>
     </div>
-    <div id="jitsi-container">
-        <div id="jitsi-meet"></div>
-    </div>
-    <script src="https://meet.jit.si/external_api.js"></script>
     <script>
-        // Wait for Jitsi API to load
-        function waitForJitsi() {
-            return new Promise((resolve, reject) => {
-                if (typeof JitsiMeetExternalAPI !== 'undefined') {
-                    console.log('Jitsi API already loaded');
-                    resolve();
-                    return;
-                }
-                const script = document.createElement('script');
-                script.src = 'https://meet.jit.si/external_api.js';
-                script.onload = () => {
-                    console.log('Jitsi API loaded successfully');
-                    resolve();
-                };
-                script.onerror = () => {
-                    console.error('Failed to load Jitsi API');
-                    reject(new Error('Failed to load Jitsi API'));
-                };
-                document.head.appendChild(script);
-            });
-        }
-
         // Simple loading
         const loadingText = document.getElementById('loading-text');
         const messages = ["Connecting To Magic Worlds…", "Please wait…", "Almost ready…"];
@@ -279,213 +168,41 @@
         showMessage();
         const msgInterval = setInterval(showMessage, 2000);
 
-        // Setup iframe
+        // Setup iframes
         const iframe = document.getElementById('app-frame');
-        const vcPanel = document.getElementById('vc-panel');
+        const webpagePanel = document.getElementById('webpage-panel');
+        const webpageIframe = document.getElementById('webpage-iframe');
+        const closeIcon = document.getElementById('close-icon');
+        const fallbackMessage = document.getElementById('fallback-message');
+
         if (/android|iphone|ipad/i.test(navigator.userAgent)) {
             iframe.src = "https://t.me/magicworldsbot/?startapp";
             iframe.classList.add("mobile-full");
         } else {
             iframe.src = "https://previewer.adalo.com/9a617ecf-1f98-45a1-a2c1-657fc4b4922e";
             iframe.classList.add("mobile-frame");
-            vcPanel.classList.add("show");
+            webpagePanel.style.display = 'flex';
         }
 
-        // Voice chat variables
-        let jitsiApi = null;
-        let username = '';
-        let currentRoom = '';
-        let participantMap = new Map();
-        let muted = false;
-
-        // Elements
-        const usernameSetup = document.getElementById('username-setup');
-        const channelsList = document.getElementById('channels-list');
-        const voiceControls = document.getElementById('voice-controls');
-        const usernameInput = document.getElementById('username-input');
-        const usernameBtn = document.getElementById('username-btn');
-        const participantsList = document.getElementById('participants-list');
-        const participantCount = document.getElementById('count');
-        const muteBtn = document.getElementById('mute-btn');
-        const leaveBtn = document.getElementById('leave-btn');
-
-        // Username setup
-        usernameBtn.onclick = () => {
-            username = usernameInput.value.trim();
-            if (username.length >= 2) {
-                usernameSetup.style.display = 'none';
-                channelsList.style.display = 'block';
-            } else {
-                alert('Please enter a username with at least 2 characters.');
-            }
+        // Check if iframe loads successfully
+        webpageIframe.onerror = () => {
+            webpagePanel.classList.add('error');
+        };
+        webpageIframe.onload = () => {
+            webpagePanel.classList.remove('error');
         };
 
-        // Channel selection
-        document.querySelectorAll('.vc-channel').forEach(channel => {
-            channel.onclick = async () => {
-                if (!username) {
-                    alert('Please enter a username first.');
-                    return;
-                }
-                const room = channel.dataset.room;
-                const name = channel.querySelector('.channel-name').textContent;
-                await joinChannel(room, name);
-            };
-        });
-
-        // Update participant names from Jitsi
-        function updateNames() {
-            if (!jitsiApi) return;
-            jitsiApi.getParticipantsInfo().forEach(p => {
-                const name = p.displayName || `User-${p._id.slice(0, 4)}`;
-                participantMap.set(p._id, name);
-            });
-            updateParticipants();
+        // Webpage panel toggle
+        function togglePanel() {
+            webpagePanel.classList.toggle('closed');
         }
 
-        // Join voice channel
-        async function joinChannel(room, name) {
-            currentRoom = room;
-            channelsList.style.display = 'none';
-            voiceControls.classList.add('active');
-            document.getElementById('current-channel-name').textContent = name;
-            document.getElementById('status').textContent = 'Connecting...';
-
-            // Clear participants
-            participantMap.clear();
-            updateParticipants();
-
-            // Wait for Jitsi and initialize
-            try {
-                await waitForJitsi();
-                await initJitsiWithTimeout(room, 15000); // Increased timeout to 15 seconds
-            } catch (error) {
-                console.error('Failed to join channel:', error);
-                document.getElementById('status').textContent = 'Failed to connect. Please try again.';
-            }
-        }
-
-        // Initialize Jitsi with timeout
-        async function initJitsiWithTimeout(room, timeoutMs) {
-            const roomName = `MagicWorlds-${room}`;
-            const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error('Connection timeout')), timeoutMs);
-            });
-
-            const initPromise = new Promise((resolve, reject) => {
-                if (jitsiApi) {
-                    jitsiApi.dispose();
-                    jitsiApi = null;
-                }
-
-                if (typeof JitsiMeetExternalAPI === 'undefined') {
-                    reject(new Error('Jitsi API not loaded'));
-                    return;
-                }
-
-                try {
-                    jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', {
-                        roomName: roomName,
-                        width: '100%',
-                        height: '100%',
-                        parentNode: document.getElementById('jitsi-meet'),
-                        userInfo: { displayName: username },
-                        configOverwrite: {
-                            startWithAudioMuted: false,
-                            startWithVideoMuted: true,
-                            startAudioOnly: true,
-                            prejoinPageEnabled: false,
-                            disableDeepLinking: true,
-                            disableSelfView: true
-                        }
-                    });
-
-                    // Event listeners
-                    jitsiApi.addEventListener('participantJoined', (event) => {
-                        console.log('Participant joined:', event);
-                        participantMap.set(event.id, `User-${event.id.slice(0, 4)}`);
-                        updateParticipants();
-                        // Update names shortly after join to get displayName
-                        setTimeout(updateNames, 500);
-                    });
-
-                    jitsiApi.addEventListener('participantLeft', (event) => {
-                        console.log('Participant left:', event);
-                        participantMap.delete(event.id);
-                        updateParticipants();
-                    });
-
-                    jitsiApi.addEventListener('displayNameChanged', (event) => {
-                        console.log('Display name changed:', event);
-                        if (participantMap.has(event.id)) {
-                            participantMap.set(event.id, event.displayname || `User-${event.id.slice(0, 4)}`);
-                            updateParticipants();
-                        }
-                    });
-
-                    jitsiApi.addEventListener('audioMuteStatusChanged', (event) => {
-                        muted = event.muted;
-                        muteBtn.textContent = muted ? '🔇 Unmute' : '🎤 Mute';
-                    });
-
-                    jitsiApi.addEventListener('videoConferenceJoined', () => {
-                        console.log('Joined video conference');
-                        // Add local user
-                        const myId = jitsiApi.myUserId();
-                        participantMap.set(myId, username);
-                        // Fetch other participants
-                        updateNames();
-                        document.getElementById('status').textContent = 'Connected';
-                        resolve();
-                    });
-
-                    jitsiApi.addEventListener('errorOccurred', (error) => {
-                        console.error('Jitsi error:', error);
-                        reject(new Error('Jitsi error occurred: ' + error));
-                    });
-                } catch (error) {
-                    reject(error);
-                }
-            });
-
-            return Promise.race([initPromise, timeoutPromise]);
-        }
-
-        // Update participants display
-        function updateParticipants() {
-            participantsList.innerHTML = '';
-            participantCount.textContent = participantMap.size;
-
-            [...participantMap.entries()].forEach(([id, name]) => {
-                const div = document.createElement('div');
-                div.className = 'participant';
-                div.innerHTML = `<div class="participant-name">${name}</div>`;
-                participantsList.appendChild(div);
-            });
-        }
-
-        // Controls
-        muteBtn.onclick = () => {
-            if (jitsiApi) {
-                jitsiApi.executeCommand('toggleAudio');
-            } else {
-                alert('Not connected to voice chat.');
+        webpagePanel.onclick = (e) => {
+            if (webpagePanel.classList.contains('closed') && e.target !== closeIcon) {
+                togglePanel();
             }
         };
-
-        leaveBtn.onclick = () => {
-            if (jitsiApi) {
-                jitsiApi.dispose();
-                jitsiApi = null;
-            }
-            voiceControls.classList.remove('active');
-            channelsList.style.display = 'block';
-            participantMap.clear();
-            updateParticipants();
-            muted = false;
-            muteBtn.textContent = '🎤 Mute';
-            document.getElementById('status').textContent = 'Disconnected';
-        };
+        closeIcon.onclick = togglePanel;
 
         // Finish loading
         setTimeout(() => {
