@@ -291,6 +291,7 @@
         let username = '';
         let currentRoom = '';
         let participantMap = new Map();
+        let muted = false;
 
         // Elements
         const usernameSetup = document.getElementById('username-setup');
@@ -327,6 +328,16 @@
             };
         });
 
+        // Update participant names from Jitsi
+        function updateNames() {
+            if (!jitsiApi) return;
+            jitsiApi.getParticipantsInfo().forEach(p => {
+                const name = p.displayName || `User-${p._id.slice(0, 4)}`;
+                participantMap.set(p._id, name);
+            });
+            updateParticipants();
+        }
+
         // Join voice channel
         async function joinChannel(room, name) {
             currentRoom = room;
@@ -351,7 +362,7 @@
 
         // Initialize Jitsi with timeout
         async function initJitsiWithTimeout(room, timeoutMs) {
-            const roomName = `MagicWorlds-${room}-${Date.now()}`; // Unique room name to avoid conflicts
+            const roomName = `MagicWorlds-${room}`; // Static room name per channel for shared access
             const timeoutPromise = new Promise((_, reject) => {
                 setTimeout(() => reject(new Error('Connection timeout')), timeoutMs);
             });
@@ -385,9 +396,10 @@
                     // Event listeners
                     jitsiApi.addEventListener('participantJoined', (event) => {
                         console.log('Participant joined:', event);
-                        const name = event.displayName || `User-${event.id.slice(0, 4)}`;
-                        participantMap.set(event.id, name);
+                        participantMap.set(event.id, `User-${event.id.slice(0, 4)}`);
                         updateParticipants();
+                        // Update names shortly after join to get displayName
+                        setTimeout(updateNames, 500);
                     });
 
                     jitsiApi.addEventListener('participantLeft', (event) => {
@@ -404,14 +416,18 @@
                         }
                     });
 
+                    jitsiApi.addEventListener('audioMuteStatusChanged', (event) => {
+                        muted = event.muted;
+                        muteBtn.textContent = muted ? '🔇 Unmute' : '🎤 Mute';
+                    });
+
                     jitsiApi.addEventListener('videoConferenceJoined', () => {
                         console.log('Joined video conference');
-                        // Fetch initial participants
-                        jitsiApi.getParticipantsInfo().forEach(p => {
-                            const name = p.displayName || `User-${p.participantId.slice(0, 4)}`;
-                            participantMap.set(p.participantId, name);
-                        });
-                        updateParticipants();
+                        // Add local user
+                        const myId = jitsiApi.myUserId();
+                        participantMap.set(myId, username);
+                        // Fetch other participants
+                        updateNames();
                         document.getElementById('status').textContent = 'Connected';
                         resolve();
                     });
@@ -442,12 +458,9 @@
         }
 
         // Controls
-        let muted = false;
         muteBtn.onclick = () => {
             if (jitsiApi) {
                 jitsiApi.executeCommand('toggleAudio');
-                muted = !muted;
-                muteBtn.textContent = muted ? '🔇 Unmute' : '🎤 Mute';
             } else {
                 alert('Not connected to voice chat.');
             }
