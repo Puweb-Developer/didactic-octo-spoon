@@ -76,6 +76,8 @@
             height: 60px;
             border-radius: 50%;
             cursor: pointer;
+            bottom: 20px;
+            right: 20px;
         }
         .webpage-panel.closed:hover {
             background: rgba(88, 101, 242, 0.15);
@@ -84,11 +86,17 @@
             font-size: 24px;
             color: #5865f2;
             transition: opacity 0.3s ease-in-out;
-            user-select: none; /* Prevent text selection */
-            pointer-events: none; /* Prevent direct clicks on icon */
+            user-select: none;
+            pointer-events: none;
+            position: absolute;
+            z-index: 5;
+        }
+        .webpage-panel.closed .mic-icon {
+            opacity: 1;
         }
         .webpage-panel:not(.closed) .mic-icon {
             opacity: 0;
+            pointer-events: none;
         }
         .close-icon {
             position: absolute;
@@ -105,7 +113,8 @@
             color: #ed4245;
             cursor: pointer;
             transition: background 0.2s ease-in-out;
-            user-select: none; /* Prevent text selection */
+            user-select: none;
+            z-index: 10;
         }
         .close-icon:hover {
             background: rgba(237, 66, 69, 0.3);
@@ -118,6 +127,11 @@
             height: 100%;
             border: none;
             background: #fff;
+            border-radius: 8px;
+            display: none;
+        }
+        .webpage-panel:not(.closed) .webpage-iframe {
+            display: block;
         }
         .webpage-panel.closed .webpage-iframe {
             display: none;
@@ -128,15 +142,49 @@
             font-size: 14px;
             color: #ed4245;
             padding: 20px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            background: rgba(32, 34, 37, 0.9);
+            border-radius: 8px;
         }
         .webpage-panel.error .webpage-iframe {
             display: none;
         }
         .webpage-panel.error .fallback-message {
-            display: block;
+            display: flex;
+        }
+        .loading-message {
+            display: none;
+            text-align: center;
+            font-size: 14px;
+            color: #5865f2;
+            padding: 20px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            background: rgba(32, 34, 37, 0.9);
+            border-radius: 8px;
+        }
+        .webpage-panel.loading .loading-message {
+            display: flex;
+        }
+        .webpage-panel.loading .webpage-iframe {
+            display: none;
         }
         @media (max-width: 768px) {
-            .webpage-panel { display: none !important; }
+            .webpage-panel { 
+                display: none !important; 
+            }
+            .mobile-frame {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
         }
     </style>
 </head>
@@ -146,10 +194,11 @@
     </div>
     <iframe id="app-frame"></iframe>
    
-    <div class="webpage-panel" id="webpage-panel">
+    <div class="webpage-panel closed" id="webpage-panel">
         <span class="mic-icon">🎤</span>
         <span class="close-icon" id="close-icon">✖</span>
-        <iframe class="webpage-iframe" id="webpage-iframe" src="https://previewer.adalo.com/9a617ecf-1f98-45a1-a2c1-657fc4b4922e"></iframe>
+        <div class="loading-message" id="loading-message">Loading webpage...</div>
+        <iframe class="webpage-iframe" id="webpage-iframe" src="https://example.com"></iframe>
         <div class="fallback-message" id="fallback-message">Failed to load webpage. Please try again later.</div>
     </div>
     <script>
@@ -174,6 +223,7 @@
         const webpageIframe = document.getElementById('webpage-iframe');
         const closeIcon = document.getElementById('close-icon');
         const fallbackMessage = document.getElementById('fallback-message');
+        const loadingMessage = document.getElementById('loading-message');
 
         if (/android|iphone|ipad/i.test(navigator.userAgent)) {
             iframe.src = "https://t.me/magicworldsbot/?startapp";
@@ -184,25 +234,70 @@
             webpagePanel.style.display = 'flex';
         }
 
-        // Check if iframe loads successfully
-        webpageIframe.onerror = () => {
-            webpagePanel.classList.add('error');
-        };
-        webpageIframe.onload = () => {
+        // Webpage loading states
+        function showLoadingState() {
+            webpagePanel.classList.add('loading');
             webpagePanel.classList.remove('error');
-        };
-
-        // Webpage panel toggle
-        function togglePanel() {
-            webpagePanel.classList.toggle('closed');
         }
 
-        webpagePanel.onclick = (e) => {
+        function showSuccessState() {
+            webpagePanel.classList.remove('loading');
+            webpagePanel.classList.remove('error');
+        }
+
+        function showErrorState() {
+            webpagePanel.classList.remove('loading');
+            webpagePanel.classList.add('error');
+        }
+
+        // Setup iframe events
+        webpageIframe.onload = () => {
+            console.log('Webpage iframe loaded successfully');
+            showSuccessState();
+        };
+
+        webpageIframe.onerror = (e) => {
+            console.log('Webpage iframe failed to load:', e);
+            showErrorState();
+        };
+
+        // Start loading when panel opens
+        function openPanel() {
+            webpagePanel.classList.remove('closed');
+            showLoadingState();
+            // Force reload the iframe to trigger loading state
+            const currentSrc = webpageIframe.src;
+            webpageIframe.src = '';
+            setTimeout(() => {
+                webpageIframe.src = currentSrc;
+            }, 100);
+        }
+
+        function closePanel() {
+            webpagePanel.classList.add('closed');
+        }
+
+        function togglePanel() {
+            if (webpagePanel.classList.contains('closed')) {
+                openPanel();
+            } else {
+                closePanel();
+            }
+        }
+
+        // Event listeners
+        webpagePanel.addEventListener('click', (e) => {
+            // Only toggle if clicking on the closed panel (not the close button)
             if (webpagePanel.classList.contains('closed') && e.target !== closeIcon) {
+                e.stopPropagation();
                 togglePanel();
             }
-        };
-        closeIcon.onclick = togglePanel;
+        });
+
+        closeIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePanel();
+        });
 
         // Finish loading
         setTimeout(() => {
